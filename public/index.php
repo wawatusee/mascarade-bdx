@@ -1,5 +1,10 @@
 <?php
-// Config.php instancie Config_model qui nous donnera de quoi traiter les langues, le titre, le comportement singlepage, les adresses des répertoires utiles du site.
+
+/* Config.php
+les adresses des répertoires utiles du site
+instancie Config_model qui nous donnera de quoi traiter les langues,
+le titre,
+le comportement singlepage.*/
 require_once "../config/config.php";
 
 ?>
@@ -13,7 +18,6 @@ require_once "../config/config.php";
         } else {
             echo "singlePage = vrai";
         }
-
         require_once "../inc/header.php";
         require_once "../inc/main.php";
         require_once "../inc/footer.php";

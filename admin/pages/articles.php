@@ -4,7 +4,9 @@
 // On récupère la liste des articles existants pour le menu latéral ou la gestion
 $articlesDir = JSON_ARTICLES_DIR;
 $existingArticles = array_diff(scandir($articlesDir), array('..', '.'));
+
 ?>
+
 
 <div class="admin-editor-container">
     <aside class="admin-sidebar">

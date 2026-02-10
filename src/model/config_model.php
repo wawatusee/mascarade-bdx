@@ -37,7 +37,7 @@ class ConfigModel
     private static function loadConfig(): void
     {
         $configPath = ROOT_PATH . 'json/config.json';
-
+//$configPath = '../../json/config.json';
         // DEBUG - À retirer après
         error_log('ConfigModel: Chemin = ' . $configPath);
         error_log('ConfigModel: Existe = ' . (file_exists($configPath) ? 'OUI' : 'NON'));

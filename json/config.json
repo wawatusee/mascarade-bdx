@@ -6,7 +6,6 @@
 	"repJson":"../json/events/",
 	"langs":[
 		{"fr":"Français"},
-		{"en":"Anglais"},
-		{"nl":"Néerlandais"}									
+		{"en":"Anglais"}									
 	]
 }

@@ -46,8 +46,7 @@ $existingArticles = array_diff(scandir($articlesDir), array('..', '.'));
             die("Erreur système : ADMIN_PATH non définie.");
         }
         // Utilisation du modèle pour récupérer les langues configurées
-        $langs = ConfigModel::getLangs(); // Récupère { "fr": "Français", ... } [cite: 37]
-        var_dump($langs);
+        $langs = ConfigModel::getLangs(); // Récupère { "fr": "Français", ... }
         $langKeys = array_keys($langs);
         ?>
         <div class="lang-tabs-wrapper">

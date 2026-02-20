@@ -1,4 +1,8 @@
 <?php
+/**
+ * API v2 - Suppression d'un article
+ */
+
 session_start();
 
 if (!isset($_SESSION['user'])) {
@@ -8,7 +12,6 @@ if (!isset($_SESSION['user'])) {
 }
 
 require_once __DIR__ . '/../../config_admin.php';
-require_once ADMIN_PATH . 'src/model/config_model.php';
 require_once ROOT_PATH . 'src/core/component_model.php';
 
 header('Content-Type: application/json; charset=utf-8');
@@ -16,14 +19,16 @@ header('Content-Type: application/json; charset=utf-8');
 $jsonInput = file_get_contents('php://input');
 $data = json_decode($jsonInput, true);
 
-if (json_last_error() !== JSON_ERROR_NONE) {
-    echo json_encode(['success' => false, 'error' => 'JSON invalide']);
+$filename = $data['filename'] ?? null;
+
+if (!$filename) {
+    echo json_encode(['success' => false, 'error' => 'Nom de fichier manquant']);
     exit;
 }
 
-$langs = array_keys(ConfigModel::getLangs());
+$langs = ['fr', 'en'];
 $model = new ComponentModel(JSON_ARTICLES_DIR, $langs, 'article');
 
-$result = $model->save($data);
+$result = $model->delete($filename);
 
 echo json_encode($result);

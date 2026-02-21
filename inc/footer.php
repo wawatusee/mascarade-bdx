@@ -3,9 +3,8 @@
         <nav class="navfooterbloc">
             <h2>Contacts</h2>
             <address>
-                <a class="maillink" href="mailto:info@bathyscaphe.be">info@bathyscaphe.be</a>
+                <a class="maillink" href="mailto:info@mascarade-bdx.fr">info@mascarade-bdx.fr</a>
                 <a class="phonelink" href="tel:+32485966694">+32(0)485 96 66 94</a>
-                <div class="situationlink">rue Dieudonné Lefèvre, 215<br> 1020 Brussels - Belgium</div>
             </address>
         </nav>
         <nav class="navfooterbloc">

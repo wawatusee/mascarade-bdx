@@ -1,16 +1,63 @@
 <?php
 /**
  * ConfigModel - Gestion de la configuration globale
- * Nucleus CMS - Session 2
+ * Nucleus CMS
+ * 
+ * Utilisable en contexte admin (ROOT_PATH défini par config_admin.php)
+ * et en contexte public (ROOT_PATH défini par config/config.php)
  */
 
 class ConfigModel
 {
-    private static ?array $langs = null;
-    private static ?array $config = null;
+    private static ?array $langs   = null;
+    private static ?array $config  = null;
+
+    // =========================================================
+    // ACCÈS À LA CONFIG BRUTE
+    // =========================================================
+
+    private static function loadConfig(): void
+    {
+        $configPath = ROOT_PATH . 'json/config.json';
+
+        if (!file_exists($configPath)) {
+            self::$config = [];
+            self::$langs  = ['fr' => 'Français'];
+            return;
+        }
+
+        $content      = file_get_contents($configPath);
+        self::$config = json_decode($content, true) ?? [];
+
+        // Construction du tableau de langues ['code' => 'Label']
+        self::$langs = [];
+        if (isset(self::$config['langs']) && is_array(self::$config['langs'])) {
+            foreach (self::$config['langs'] as $langItem) {
+                foreach ($langItem as $code => $label) {
+                    self::$langs[$code] = $label;
+                }
+            }
+        }
+
+        if (empty(self::$langs)) {
+            self::$langs = ['fr' => 'Français'];
+        }
+    }
+
+    private static function getConfig(): array
+    {
+        if (self::$config === null) {
+            self::loadConfig();
+        }
+        return self::$config;
+    }
+
+    // =========================================================
+    // LANGUES — utilisé par l'admin et le public
+    // =========================================================
 
     /**
-     * Récupère les langues disponibles
+     * Retourne les langues disponibles
      * @return array ['code' => 'Label', ...]
      */
     public static function getLangs(): array
@@ -22,61 +69,48 @@ class ConfigModel
     }
 
     /**
-     * Récupère la langue par défaut
-     * @return string Code langue (ex: 'fr')
+     * Retourne la langue par défaut (première de la liste)
      */
     public static function getDefaultLang(): string
     {
-        $langs = self::getLangs();
-        return array_key_first($langs) ?? 'fr';
+        return array_key_first(self::getLangs()) ?? 'fr';
     }
 
+    // =========================================================
+    // SITE — utilisé par le public
+    // =========================================================
+
     /**
-     * Charge la configuration depuis le JSON
+     * Retourne le titre du site
+     * config.json : "titleWebsite": ["mascarade", "-bdx", ".fr"]
      */
-    private static function loadConfig(): void
+    public static function getTitle(): string
     {
-        $configPath = ROOT_PATH . 'json/config.json';
-//$configPath = '../../json/config.json';
-        // DEBUG - À retirer après
-        error_log('ConfigModel: Chemin = ' . $configPath);
-        error_log('ConfigModel: Existe = ' . (file_exists($configPath) ? 'OUI' : 'NON'));
-
-        if (!file_exists($configPath)) {
-            self::$langs = ['fr' => 'Français', 'en' => 'English'];
-            return;
-        }
-
-        $content = file_get_contents($configPath);
-        $data = json_decode($content, true);
-
-        // DEBUG - À retirer après
-        error_log('ConfigModel: langs brut = ' . print_r($data['langs'], true));
-
-        self::$langs = [];
-
-        if (isset($data['langs']) && is_array($data['langs'])) {
-            foreach ($data['langs'] as $langItem) {
-                foreach ($langItem as $code => $label) {
-                    self::$langs[$code] = $label;
-                }
-            }
-        }
-
-        // DEBUG - À retirer après
-        error_log('ConfigModel: langs final = ' . print_r(self::$langs, true));
-
-        if (empty(self::$langs)) {
-            self::$langs = ['fr' => 'Français', 'en' => 'English'];
-        }
+        $cfg = self::getConfig();
+        $parts = $cfg['titleWebsite'] ?? ['Site'];
+        return is_array($parts) ? implode('', $parts) : (string) $parts;
     }
 
     /**
-     * Reset le cache (utile pour tests)
+     * Retourne le comportement singlepage
+     * config.json : "singlepage": false
+     */
+    public static function isSinglePage(): bool
+    {
+        $cfg = self::getConfig();
+        return (bool) ($cfg['singlepage'] ?? false);
+    }
+
+    // =========================================================
+    // UTILITAIRES
+    // =========================================================
+
+    /**
+     * Reset du cache (utile pour les tests)
      */
     public static function clearCache(): void
     {
-        self::$langs = null;
+        self::$langs  = null;
         self::$config = null;
     }
 }

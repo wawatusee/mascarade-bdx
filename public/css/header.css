@@ -1,0 +1,68 @@
+header {
+  background: var(--color-primary);
+  color: white;
+  position: relative; /* Important pour le positionnement du menu langue */
+}
+
+/* ---------------------------------
+   Bloc principal
+---------------------------------- */
+
+.mainTitleBlock {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.2rem var(--spacing-sm) 1.8rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center; /* <<< CHANGEMENT CLÉ ICI */
+}
+
+/* ---------------------------------
+   Logo
+---------------------------------- */
+
+.logo {
+  height: 85px;
+  width: auto;
+  display: block;
+  color: white;
+  transition: transform 0.2s ease;
+}
+
+.logo:hover {
+  transform: scale(1.02);
+}
+
+/* ---------------------------------
+   Lang selector (sorti du flux)
+---------------------------------- */
+
+.menulangues {
+  position: absolute; /* <<< CHANGEMENT CLÉ ICI */
+  top: 50%;
+  right: var(--spacing-sm);
+  transform: translateY(-50%);
+}
+
+.menulangues select {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.menulangues select:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.menulangues select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.3);
+}

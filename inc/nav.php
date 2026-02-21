@@ -5,9 +5,10 @@ $menusView = new ViewMenu($lang);
 $menuMain_view = $menusView->getViewMainMenu($menuMain_model, $singlePage);
 ?>
 <nav class="responsiveMenu" id="responsiveMenu">
-<a href="javascript:void(0);" class="icon" onclick="responsiveMenu()">
-        <span id="menuIcon">☰</span> <!-- Icône du menu -->
+    <a href="javascript:void(0);" class="icon" onclick="responsiveMenu()" aria-label="Menu principal">
+        <span id="menuIcon" aria-hidden="true">☰</span>
     </a>
+
     <?php
     echo $menuMain_view;
     ?>

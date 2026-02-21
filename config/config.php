@@ -1,39 +1,51 @@
-<?php 
-//Racine du site
-define('ROOT', '../');
+<?php
+// =========================================================
+// CHEMINS
+// =========================================================
+define('ROOT_PATH', realpath(__DIR__ . '/../') . DIRECTORY_SEPARATOR);
+define('ROOT',      '../');
 define('PUBLIC_URL', '../public/');
-echo "";
-echo "";
-//Répertoire global des images
-define('IMG_URL',PUBLIC_URL.'img/');
-$repMedias=IMG_URL;
-$repDeco=IMG_URL.'deco/';
-$repImg=IMG_URL.'content/';
-define('JSON','../json/');
-require_once '../src/model/config_model.php';
-$config = new ConfigModel(JSON . 'config.json');
-//Config du site, partie publique
-//Comportement single ou multipage,
-// chaque section intégrée sera soit absorbée par la simple page ou deviendra une page à part entière
-$singlePage = $config->get_single_page_behaviour();
-//Fin de comportement single ou multipage,
-/*****************************************/
-$title = $config->get_title();
-//Gestion de langue
-$langs = $config->get_langs();
+
+define('IMG_URL', PUBLIC_URL . 'img/');
+$repMedias   = IMG_URL;
+$repDeco     = IMG_URL . 'deco/';
+$repImg      = IMG_URL . 'content/';
+$repImgDeco  = IMG_URL . 'deco/';
+
+define('JSON', ROOT_PATH . 'json/');
+
+// =========================================================
+// MODÈLES
+// =========================================================
+require_once ROOT_PATH . 'src/model/config_model.php';
+require_once ROOT_PATH . 'src/model/menus_model.php';
+
+// =========================================================
+// CONFIGURATION DU SITE
+// =========================================================
+$singlePage       = ConfigModel::isSinglePage();
+$str_titleWebSite = ConfigModel::getTitle();
+
+// =========================================================
+// LANGUES
+// =========================================================
+$langs = ConfigModel::getLangs();
+
 if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $langs)) {
     $lang = $_GET['lang'];
 } else {
-    $lang = 'fr';
+    $lang = ConfigModel::getDefaultLang();
 }
-var_dump($langs);
+
 define('APP_LANG', $lang);
-//Fin de gestion de langue
-/************************/
-//Paramètres de base du site
-/*******/
 
+// =========================================================
+// MENUS
+// =========================================================
+$menus         = new MenusModel(JSON . 'menus.json');
+$menuMain      = $menus->getMenu('Main_menu');
+$menuRS        = $menus->getMenu('RS_menu');
 
-/************************/
-//Fin des paramètres de base du site
-//Fin de config du site, partie publique
+// Liste des pages disponibles (pour la navigation et la sécurité)
+$pagesDuMenus  = array_column((array) $menuMain, 'page');
+define('PAGE_ARRAY', $pagesDuMenus);

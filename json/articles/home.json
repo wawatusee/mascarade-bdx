@@ -1,0 +1,18 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "home",
+        "created": "2026-04-11",
+        "updated": "2026-04-11",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "text",
+            "data": {
+                "fr": "Le site est en cours de construction, nous profitons de cet article comme contenu pour la crétion de pages.",
+                "en": ""
+            }
+        }
+    ]
+}

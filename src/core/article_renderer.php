@@ -70,7 +70,8 @@ class ArticleRenderer
 
     private static function renderList(array $block, string $lang): void
     {
-        $items = $block['items'][$lang] ?? $block['items']['fr'] ?? [];
+        $src   = isset($block['data']) ? $block['data'] : $block;
+        $items = $src[$lang] ?? $src['fr'] ?? [];
         if (empty($items)) return;
 
         echo '<ul class="nucleus-list">' . "\n";
@@ -83,7 +84,7 @@ class ArticleRenderer
     private static function renderLink(array $block, string $lang): void
     {
         $label = self::t($block, $lang);
-        $href  = $block['href'] ?? '#';
+        $href  = $block['url'] ?? $block['href'] ?? '#';
         if (!$label) return;
 
         $target = !empty($block['external']) ? ' target="_blank" rel="noopener"' : '';
@@ -93,9 +94,11 @@ class ArticleRenderer
 
     /**
      * Résout le texte dans la langue demandée avec fallback fr
+     * Supporte { "fr": "..." } direct ou { "data": { "fr": "..." } }
      */
     private static function t(array $block, string $lang): string
     {
-        return $block[$lang] ?? $block['fr'] ?? $block['en'] ?? '';
+        $src = isset($block['data']) ? $block['data'] : $block;
+        return $src[$lang] ?? $src['fr'] ?? $src['en'] ?? '';
     }
 }
